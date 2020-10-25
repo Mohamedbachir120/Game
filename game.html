@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <title>Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+</head>
+<body>
+        <h1 id="st"> Press space to start the game </h1>
+        <div class="mon">
+        <img id="monster" src="monstre-final.png" width="150px">
+        <div class="mlife">
+            <div class="mscore"></div>
+       </div>
+          </div>
+    <audio src="music.mp3" loop="true"></audio>
+       <div class="img" style="display: flexbox; flex-direction: column;">  
+             <img src="standing.png" width="100px"/>
+    <div class="life">
+         <div class="score"></div>
+    </div>
+</div>
+
+</body>
+
+    </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+    #st{
+        color:white;
+        text-align: center;
+    }
+
+    body{
+        background-image: url("images.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    .life{
+        max-height: 4px;
+        height: 6px;
+        width: 80px;
+        background-color: black;
+        margin-left: 10px;
+        
+    }
+    .score{
+        background-color: red;
+        flex: 1;
+        height: 3px;
+        width: 80px;
+        
+    }
+    .img img{
+        top:100px;
+        left: 100px;
+       
+    }
+    .img{
+        position:absolute;
+        
+    }
+    .mon{
+        position:absolute;
+        left: 1260px;
+         top:100px;   
+ 
+    }
+    .mlife{
+        margin-top: -20px;
+        max-height: 4px;
+        height: 6px;
+        width: 60px;
+        background-color: black;
+        margin-left: 10px;
+        
+    }
+    .mscore{
+        background-color: red;
+        flex: 1;
+        height: 3px;
+        width: 60px;
+        
+    }
+    #ball{
+        z-index: 1;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background:radial-gradient(ellipse at bottom, rgb(200,0,0)0%,rgb(0,0,0)100% );
+        border-radius: 50%;
+    }
+
+</style>
+<script>
+    
+  $(document).ready(function(){
+      
+    window.setInterval(function(){
+    $("#st").fadeToggle(1500);
+    });
+      var nb=1;
+
+      var arrived=false;
+  $("body").keydown(function(event){
+      $('audio')[0].play();
+      if(event.code=="Space"){
+           $("#st").remove(); 
+          if(nb==1){
+          var top=$(".img").css("top");
+          top=top.substring(0,top.length-2);
+          var left=$(".img").css("left");
+          left=left.substring(0,left.length-2);
+          $('body').append('<div id="ball"></div>');
+          $('#ball').css({"top":top+"px","left":left+"px"});
+          nb=0;
+          window.setInterval(function(){
+          
+          var top=$("#ball").css("top");
+          top=top.substring(0,top.length-2);
+          var left=$("#ball").css("left");
+          left=left.substring(0,left.length-2);
+          /*  position du monstre */
+             var top_mon=$(".mon").css("top");
+            var left_mon=$(".mon").css("left");
+            top_mon=top_mon.substring(0,top_mon.length-2);
+            left_mon=left_mon.substring(0,left_mon.length-2);
+
+            console.log(top+"=>"+top_mon+":"+left+"=>"+left_mon);
+            
+        /*  end of position of monster 
+        
+        check if the ball hit the monster 
+         */ 
+
+
+ if((parseInt(top_mon)<=parseInt(top)+50) && (parseInt(top_mon)>=parseInt(top)-50) && (parseInt(left_mon)<=parseInt(left)+50) && (parseInt(left_mon)>=parseInt(left)-50) )
+           {
+            var width=$(".mscore").css("width");
+                width=width.substring(0,width.length-2);
+                width=parseInt(width)-2;
+                $(".mscore").css({"width":width+"px"});
+                if(width==0){
+                    alert("you win ! ");
+                    location.reload();
+                }
+         
+
+
+           }  
+
+   
+          if(parseInt(left) < 1280 && arrived==false){
+
+          left=parseInt(left)+10;
+
+           var left_car=$(".img").css("left");
+           var top_car=$(".img").css("top");
+           left_car=left_car.substring(0,left_car.length-2);
+           top_car=top_car.substring(0,top_car.length-2);
+
+
+            if(parseInt(left_car)==parseInt(left) &&  parseInt(top_car)<=parseInt(top)-10 && parseInt(top_car)>=parseInt(top)-50){
+                var width=$(".score").css("width");
+                width=width.substring(0,width.length-2);
+                width=parseInt(width)-10;
+                $(".score").css({"width":width+"px"});
+            }
+         
+          $('#ball').css({"top":top+"px","left":left+"px"});
+            if(left>=1280){
+                arrived=true;
+            }    
+
+           }
+           else{
+           
+           var left_car=$(".img").css("left");
+           var top_car=$(".img").css("top");
+           left_car=left_car.substring(0,left_car.length-2);
+           top_car=top_car.substring(0,top_car.length-2);
+
+
+          
+
+           if(parseInt(left_car)==parseInt(left) &&  parseInt(top_car)<=parseInt(top)-10 && parseInt(top_car)>=parseInt(top)-50){
+          var width=$(".score").css("width");
+                width=width.substring(0,width.length-2);
+                width=parseInt(width)-10;
+                if(parseInt(width)<=0){
+                    
+                    alert("game over");
+                    
+                    location.reload();
+
+                }
+                $(".score").css({"width":width+"px"});
+            }
+         
+            left=parseInt(left)-10;
+            
+            $('#ball').css({"top":top+"px","left":left+"px"});  
+            if(left<=50){
+                arrived=false;
+            }    
+          }
+
+         
+          },50);
+
+          window.setInterval(function(){
+
+            var top_mon=$(".mon").css("top");
+            var left_mon=$(".mon").css("left");
+            var t_car=$(".img").css("top");
+            var l_car=$(".img").css("left");
+
+            top_mon=top_mon.substring(0,top_mon.length-2);
+            left_mon=left_mon.substring(0,left_mon.length-2);
+            t_car=t_car.substring(0,t_car.length-2);
+            l_car=l_car.substring(0,l_car.length-2);
+           
+             if(parseInt(left_mon)>parseInt(l_car)){
+                 left_mon=parseInt(left_mon)-5;
+
+             
+             }else if(parseInt(left_mon)<parseInt(l_car)){
+                left_mon=parseInt(left_mon)+5;
+
+             }
+             if(parseInt(top_mon)>parseInt(t_car)){
+                top_mon=parseInt(top_mon)-5;
+             }
+             else if(parseInt(top_mon)<parseInt(t_car)){
+                top_mon=parseInt(top_mon)+5;
+                 
+             }
+              if(parseInt(top_mon)<=parseInt(t_car)+50 && parseInt(top_mon)>=parseInt(t_car)-50 && parseInt(left_mon)<=parseInt(l_car)+50 && parseInt(left_mon)>=parseInt(l_car)-50){
+                var width=$(".score").css("width");
+                width=width.substring(0,width.length-2);
+                width=parseInt(width)-5;
+                $(".score").css({"width":width+"px"});
+                
+                if(parseInt(width)<=0){
+
+                        
+                    alert("game over");
+                   
+                    location.reload();
+                }
+
+             }
+             
+             $('.mon').css({"top":top_mon+"px","left":left_mon+"px"});
+
+
+
+
+
+
+        },50);
+       
+      }}
+     if(event.code=="ArrowUp"){
+        
+         var pos=$(".img").css("top");
+         pos =pos.substring(0,pos.length-2);
+         pos= parseInt(pos)-10;
+         $(".img").css({"top":pos});
+         
+    
+         
+
+
+     }
+       else if(event.code=="ArrowLeft"){  
+           if( $(".img").children('img').attr("src")=="L1.png"){
+        $(".img").children('img').attr("src","L2.png");    
+    }else{
+        $(".img").children('img').attr("src","L1.png");    
+        
+    }
+        var pos=$(".img").css("left");
+         pos =pos.substring(0,pos.length-2);
+         pos= parseInt(pos)-10;
+         $(".img").css({"left":pos});
+
+    }
+
+       else if(event.code=="ArrowDown")
+       { 
+       var pos=$(".img").css("top");
+         pos =pos.substring(0,pos.length-2);
+         pos= parseInt(pos)+10;
+         $(".img").css({"top":pos});
+
+    
+    }
+
+       else if(event.code== "ArrowRight") { 
+        if( $(".img").children('img').attr("src")=="R1.png"){
+            
+           $(".img").children('img').attr("src","R2.png");}
+           else{
+            $(".img").children('img').attr("src","R1.png");
+           }
+            var pos=$(".img").css("left");
+             pos =pos.substring(0,pos.length-2);
+             pos= parseInt(pos)+10;
+             $(".img").css({"left":pos});
+
+        }
+        });
+});
+</script>

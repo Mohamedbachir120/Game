@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+<div>
+    <h1>
+      Welcome To <br>
+        Houshi and Zombie 
+        <br>
+        Press any key to continue 
+        <span style="margin-left:30%;display: flex; flex-direction: row;">
+        <img src="standing.png" width="100px"/>
+        <img id="monster" src="monstre-final.png" width="150px">
+    </span>
+    </h1>
+</div>
+</body>
+<style>
+    h1{
+        color:white;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+    }
+    body{
+        background-image: url("images.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    div{
+        margin-top: 15%;
+        border: 3px red double;
+        width: 600px;
+        margin-left: 26%;
+        border-radius: 20%;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        window.setInterval(function(){
+        $("div").fadeToggle(1500);
+        });
+        $("body").keydown(function(event){
+            window.location.href ="game.html";
+        });
+    });
+</script>
+</html>
